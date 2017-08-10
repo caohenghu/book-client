@@ -1,0 +1,46 @@
+.btn {
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: $border-radius;
+    display: inline-block;
+    transition: all .3s;
+    font-size: 12px;
+    vertical-align: top;
+    &.blue {
+        @include button-color($blue-normal, $blue-hover);
+    }
+    &.red {
+        @include button-color($red-normal, $red-hover);
+    }
+    &.green {
+        @include button-color($green-normal, $green-hover);
+    }
+    &.border-white {
+        color: #fff;
+        border: 1px solid #fff;
+        &:hover {
+            color: $font-light;
+            background-color: #fff;
+        }
+    }
+    &.border-blue {
+        @include button-border-color($blue-normal);
+    }
+    &.border-green {
+        @include button-border-color($green-normal);
+    }
+    &.border-red {
+        @include button-border-color($red-normal);
+    }
+    &.border-grey-red {
+        @include button-border-grey($red-normal);
+    }
+    &.border-grey-blue {
+        @include button-border-grey($blue-normal);
+    }
+    &.border-grey-green {
+        @include button-border-grey($green-normal);
+    }
+}

@@ -1,0 +1,19 @@
+.text {
+    width: 180px;
+    height: 30px;
+    padding: 0 6px;
+    border-radius: 3px;
+    color: $font-light;
+    transition: all .3s;
+    font-size: 12px;
+    @include border();
+    &::-webkit-input-placeholder {
+        color: $font-lighter;
+    }
+    &:hover,
+    &:focus {
+        //box-shadow: 0 0 10px 0 $blue-normal;
+        @include border($blue-normal);
+    }
+
+}
