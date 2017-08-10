@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = (options) => {
 
     const env = require('./env/' + options.config + '.js');
-    const buildDir = env.DIR_BUILD;
+    const buildDir = 'dist';
     const isLocal = options.local;
 
     return {
