@@ -1,102 +1,115 @@
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const path = require('path');
+const webpack = require('webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
+const argv = require('yargs').argv
+const path = require('path')
+const fs = require('fs')
 
 module.exports = (options) => {
-
-    const env = require('./env/' + options.config + '.js');
-    const buildDir = 'dist';
-    const isLocal = options.local;
-
-    return {
-        entry: {
-            app: './src/vue'
+    const env = require('./env/' + options.config + '.js')
+    const buildDir = 'dist'
+    const isLocal = options.local
+    const minify = {
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: true, // 删除HTML中的注释
+        collapseWhitespace: true, // 删除空白符与换行符
+        collapseBooleanAttributes: true, // 省略布尔属性的值 <input checked="true"/> ==> <input checked />
+        removeEmptyAttributes: true, // 删除所有空格作属性值 <input id="" /> ==> <input />
+        removeScriptTypeAttributes: true, // 删除script上的type
+        removeStyleLinkTypeAttributes: true // 删除style上的type
+    }
+    const rules = [
+        {
+            test: /\.vue$/,
+            use: 'vue-loader'
         },
-
-        output: {
-            // publicPath: env.HOST_CDN + env.HTML_BASE + '/',
-            publicPath: '/',
-            path: path.resolve(__dirname + '/' + buildDir),
-            filename: isLocal ? 'js/[name].js' : 'js/[name]-[chunkhash:8].js',
-            chunkFilename: isLocal ? 'js/[name].js' : 'js/[name]-[chunkhash:8].js' // 本地开发如果使用hash，watch会影响到公用js
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
         },
-
-        module: {
-            rules: [
+        {
+            test: /\.scss$/,
+            use: [
+                'vue-style-loader',
+                'css-loader',
                 {
-                    test: /\.vue$/,
-                    use: 'vue-loader'
-                },
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: [{
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                // ['es2015', {modules: false}],
-                                'es2015'
-                                // 'stage-0'
-                            ]
-                        }
-                    }]
-                },
-                {
-                    test: /\.html$/,
-                    use: 'html-loader'
-                },
-                {
-                    test: /\.css$/,
-                    use: ExtractTextPlugin.extract(['css-loader'])
-                },
-                {
-                    test: /\.scss$/,
-                    use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
-                },
-                {
-                    test: /\.(png|jpg|gif|svg)$/,
-                    use: [
-                        {
-                            loader: 'url-loader',
-                            options: {
-                                name: 'images/[name].[ext]',
-                                limit: 1000
-                            }
-                        }
-                    ]
+                    loader: 'sass-loader',
+                    options: {
+                        data: fs.readFileSync('./src/sass/base/variable.scss')
+                    }
                 }
             ]
         },
-        // externals: {
-        //     'vue': 'vue',
-        //     'vue-router': 'vue-router'
-        // },
-        plugins: [
-            //new webpack.NoErrorsPlugin()
-            //new webpack.optimize.CommonsChunkPlugin({
-            //    name: 'base.0'
-            //})
-            new ExtractTextPlugin(isLocal ? 'css/[name].css' : 'css/[name]-[chunkhash:8].css'),
-            new CleanWebpackPlugin(buildDir, {
-                root: __dirname // 需要指定根目录，才能删除项目外的文件夹
-            }),
+        {
+            test: /\.(png|jpg|gif|svg)$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        name: 'images/[name].[ext]',
+                        limit: 1000
+                    }
+                }
+            ]
+        }
+    ]
+    const plugins = [
+        new CleanWebpackPlugin(buildDir, {
+            root: __dirname // 需要指定根目录，才能删除项目外的文件夹
+        }),
+        new VueLoaderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin(),
+        // 处理html模板
+        new HtmlWebpackPlugin({
+            template: './src/vue/index.html',
+            filename: isLocal ? 'index.html' : 'index_new.html',
+            minify,
+            host: env,
+            alwaysWriteToDisk: true
+        }),
+        new HtmlWebpackHarddiskPlugin({
+            outputPath: path.resolve(__dirname, buildDir)
+        })
+    ]
 
-            // 处理html模板
-            new HtmlWebpackPlugin({
-                template: './src/vue/index.html',
-                filename: isLocal ? 'index.html' : 'index_new.html',
-                minify: {    //压缩HTML文件
-                    // removeComments: true,    //移除HTML中的注释
-                    // collapseWhitespace: false    //删除空白符与换行符
-                },
-                host: env
-            })
-
-            // 复制文件
-            //new TransferWebpackPlugin([
-            //    { from: './src/assets', to: 'assets' }
-            //])
-        ]
+    return {
+        mode: isLocal ? 'development' : 'production',
+        entry: {
+            app: './src/vue'
+        },
+        output: {
+            publicPath: env.host.cdn + (options.hot ? ':' + env.port : '') + `/`,
+            path: path.resolve(__dirname, buildDir),
+            filename: isLocal ? 'js/[name].js' : 'js/[name]-[chunkhash:8].js',
+            chunkFilename: isLocal ? 'js/[name].js' : 'js/[name]-[chunkhash:8].js' // 本地开发如果使用hash，watch会影响到公用js
+        },
+        module: {
+            rules
+        },
+        plugins,
+        resolve: {
+            alias: {
+                env: path.resolve(__dirname, 'env/' + options.config + '.js')
+            }
+        },
+        externals: {
+            'vue': 'Vue',
+            'vue-router': 'VueRouter',
+            'vuex': 'Vuex',
+            'axios': 'axios'
+        },
+        devServer: {
+            host: env.host.cdn.replace('//', ''),
+            port: env.port,
+            hot: true,
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        }
     }
-};
+}

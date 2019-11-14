@@ -59,115 +59,113 @@
 </template>
 
 <style scoped lang="scss">
-    @import "../../sass/base/variable";
-    @import "../../sass/mixin/border";
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
 
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s
-    }
+.fade-enter,
+.fade-leave-active {
+    opacity: 0;
+}
 
-    .fade-enter, .fade-leave-active {
-        opacity: 0
-    }
+.dialog-add,
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 
-    .dialog-add,
-    .mask {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-    .dialog-add {
-        background: rgba(0, 0, 0, .7);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .dialog {
-            position: relative;
-            min-width: 300px;
-            background: #fff;
-            border-radius: $border-radius;
-            overflow: hidden;
-            .header {
-                height: 100px;
-                line-height: 50px;
-                padding: 0 40px;
-                text-align: center;
-                background: $bg-light-hover;
-                .title {
-                    font-size: 18px;
-                }
-                .search {
-                    .link {
-                        width: calc(100% - 100px);
-                        vertical-align: top;
-                        float: left;
-                    }
-                    .drag {
-                        float: right;
-                    }
-                }
-
+.dialog-add {
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .dialog {
+        position: relative;
+        min-width: 300px;
+        background: #fff;
+        border-radius: $border-radius;
+        overflow: hidden;
+        .header {
+            height: 100px;
+            line-height: 50px;
+            padding: 0 40px;
+            text-align: center;
+            background: $bg-light-hover;
+            .title {
+                font-size: 18px;
             }
-            .content {
-                padding: 20px 40px;
-                text-align: center;
-                .form {
-                    ul {
-                        display: inline-block;
-                        li {
-                            height: 30px;
-                            line-height: 30px;
-                            margin-bottom: 10px;
-                            label {
-                                width: 60px;
-                                text-align: left;
-                                color: $font-light;
-                                float: left;
-                            }
-                            input {
-                                width: 250px;
-                                float: right;
-                            }
-                            &:last-child {
-                                margin-bottom: 0;
-                            }
+            .search {
+                .link {
+                    width: calc(100% - 100px);
+                    vertical-align: top;
+                    float: left;
+                }
+                .drag {
+                    float: right;
+                }
+            }
+        }
+        .content {
+            padding: 20px 40px;
+            text-align: center;
+            .form {
+                ul {
+                    display: inline-block;
+                    li {
+                        height: 30px;
+                        line-height: 30px;
+                        margin-bottom: 10px;
+                        label {
+                            width: 60px;
+                            text-align: left;
+                            color: $font-light;
+                            float: left;
+                        }
+                        input {
+                            width: 250px;
+                            float: right;
+                        }
+                        &:last-child {
+                            margin-bottom: 0;
                         }
                     }
-                    .cover {
-                        width: 250px;
-                        height: 250px;
-                        margin-left: 10px;
-                        @include border();
-                        border-radius: $border-radius;
-                        background: no-repeat center/contain;
-                        display: inline-block;
-                    }
                 }
-                .footer {
-                    margin-top: 20px;
-                    text-align: right;
-                    li {
-                        display: inline-block;
-                    }
+                .cover {
+                    width: 250px;
+                    height: 250px;
+                    margin-left: 10px;
+                    border: 1px solid $border-grey;
+                    border-radius: $border-radius;
+                    background: no-repeat center/contain;
+                    display: inline-block;
+                }
+            }
+            .footer {
+                margin-top: 20px;
+                text-align: right;
+                li {
+                    display: inline-block;
                 }
             }
         }
     }
+}
 </style>
 
 <script>
-    import bookApi from '../api/book'
+    // import bookApi from '../api/book'
     import jdApi from '../api/jd'
 
     export default {
         props: ['title', 'ok', 'cancel', 'show'],
         computed: {
             book() {
-                return this.$store.state.book.info;
+                return this.$store.state.book.info
             }
         },
         methods: {
@@ -175,12 +173,12 @@
                 jdApi
                     .getBook(encodeURIComponent(this.book.link))
                     .then((res) => {
-                        res.body.data.link = this.book.link;
+                        res.body.data.link = this.book.link
                         this.$store.commit('BOOK_INFO', {book: res.body.data})
                     })
                     .catch((err) => {
-                        console.error(err);
-                    });
+                        console.error(err)
+                    })
             }
         }
     }

@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="user in users">
+                <tr v-for="user in users" :key="user.id">
                     <td>{{user.number}}</td>
                     <td>{{user.username}}</td>
                     <td>{{user.realname}}</td>
@@ -37,65 +37,67 @@
 </template>
 
 <style scoped lang="scss">
-    @import "../../../sass/base/variable";
-    @import "../../../sass/mixin/border";
-
-    .wrapper-center {
-        padding-top: 30px;
-        .table {
-            .col {
-                display: inline-block;
-                margin-left: -5px;
-                padding: 10px 6px;
-                width: 160px;
-                @include border();
+.wrapper-center {
+    padding-top: 30px;
+    .table {
+        .col {
+            display: inline-block;
+            margin-left: -5px;
+            padding: 10px 6px;
+            width: 160px;
+            border: 1px solid $border-grey;
+        }
+    }
+    table {
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        thead {
+            tr {
+                background: $bg-light-hover;
             }
         }
-        table {
-            width: 100%;
-            text-align: center;
-            border-collapse: collapse;
-            thead {
-                tr {
-                    background: $bg-light-hover;
-                }
+        tbody {
+            font-size: 12px;
+            tr:hover {
+                background: $bg-light-normal;
             }
-            tbody {
-                font-size: 12px;
-                tr:hover {
-                    background: $bg-light-normal;
-                }
-            }
-            th,
-            td {
-                height: 40px;
-                @include border();
-                ul {
+        }
+        th,
+        td {
+            height: 40px;
+            border: 1px solid $border-grey;
+            ul {
+                display: inline-block;
+                li {
                     display: inline-block;
-                    li {
-                        display: inline-block;
-                        a {
-                            width: 60px;
-                        }
+                    a {
+                        width: 60px;
                     }
                 }
             }
-            .opr {
-                width: 160px;
-            }
+        }
+        .opr {
+            width: 160px;
         }
     }
-
+}
 </style>
 
 <script>
-    import userApi from '../../api/user'
+    import bookApi from '../../api/book'
+    // import userApi from '../../api/user'
 
     export default {
         computed: {
-            users () {
-                return this.$store.state.user.list;
+            users() {
+                return this.$store.state.user.list
             }
+        },
+        mounted() {
+            bookApi.getBooks({}).then((res) => {
+                this.$store.commit('BOOK_LIST', {list: res.data.data})
+            })
         }
     }
 </script>

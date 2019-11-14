@@ -3,7 +3,6 @@
 </template>
 
 <style scoped lang="scss">
-
 </style>
 
 <script>
@@ -16,10 +15,10 @@
         },
         computed: {
             showBookAdd() {
-                return this.$store.state.book.showBookAdd;
+                return this.$store.state.book.showBookAdd
             },
             book() {
-                return this.$store.state.book.info;
+                return this.$store.state.book.info
             }
         },
         methods: {
@@ -29,28 +28,28 @@
                     .getBooks({isbn: this.book.isbn})
                     .then((res) => {
                         if (res.data.data.length) {
-                            alert('已存在这本书，无须重复添加');
-                            return Promise.reject();
+                            alert('已存在这本书，无须重复添加')
+                            return Promise.reject()
                         } else {
-                            return bookApi.addBook(this.book);
+                            return bookApi.addBook(this.book)
                         }
                     })
-                    .then(() =>  bookApi.getBooks({}))
+                    .then(() => bookApi.getBooks({}))
                     .then((res) => {
-                        this.$store.commit('BOOK_LIST', {list: res.body.data});
-                        this.hideBookEdit();
+                        this.$store.commit('BOOK_LIST', {list: res.body.data})
+                        this.hideBookEdit()
                     })
                     .catch((err) => {
                         if (err) {
-                            console.error(err);
+                            console.error(err)
                         }
-                    });
+                    })
             },
             cancel() {
-                this.hideBookEdit();
+                this.hideBookEdit()
             },
             hideBookEdit() {
-                this.$store.commit('SHOW_BOOK_ADD', {showBookAdd: false});
+                this.$store.commit('SHOW_BOOK_ADD', {showBookAdd: false})
             }
         }
     }

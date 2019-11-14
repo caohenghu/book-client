@@ -3,7 +3,6 @@
 </template>
 
 <style scoped lang="scss">
-
 </style>
 
 <script>
@@ -16,10 +15,10 @@
         },
         computed: {
             showUserAdd() {
-                return this.$store.state.user.showUserAdd;
+                return this.$store.state.user.showUserAdd
             },
             user() {
-                return this.$store.state.user.info;
+                return this.$store.state.user.info
             }
         },
         methods: {
@@ -29,28 +28,28 @@
                     .getUsers({isbn: this.user.isbn})
                     .then((res) => {
                         if (res.data.data.length) {
-                            alert('已存在这本书，无须重复添加');
-                            return Promise.reject();
+                            alert('已存在这本书，无须重复添加')
+                            return Promise.reject()
                         } else {
-                            return userApi.addUser(this.user);
+                            return userApi.addUser(this.user)
                         }
                     })
-                    .then(() =>  userApi.getUsers({}))
+                    .then(() => userApi.getUsers({}))
                     .then((res) => {
-                        this.$store.commit('USER_LIST', {list: res.body.data});
-                        this.hideUserEdit();
+                        this.$store.commit('USER_LIST', {list: res.body.data})
+                        this.hideUserEdit()
                     })
                     .catch((err) => {
                         if (err) {
-                            console.error(err);
+                            console.error(err)
                         }
-                    });
+                    })
             },
             cancel() {
-                this.hideUserEdit();
+                this.hideUserEdit()
             },
             hideUserEdit() {
-                this.$store.commit('SHOW_USER_ADD', {showUserAdd: false});
+                this.$store.commit('SHOW_USER_ADD', {showUserAdd: false})
             }
         }
     }

@@ -32,56 +32,53 @@
 </template>
 
 <style scoped lang="scss">
-    @import "../../../sass/base/variable";
-
-    .header {
-        color: #fff;
-        background: $bg-dark-hover;
-        .wrapper-center {
-            padding-bottom: 20px;
-            .nav {
-                height: 50px;
-                ul {
-                    li {
-                        width: 80px;
-                        line-height: 50px;
-                        text-align: center;
-                        opacity: .7;
-                        cursor: pointer;
-                        display: inline-block;
-                        &:hover,
-                        &.active {
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-            .condition {
-                margin: 100px auto 0;
-                ul {
+.header {
+    color: #fff;
+    background: $bg-dark-hover;
+    .wrapper-center {
+        padding-bottom: 20px;
+        .nav {
+            height: 50px;
+            ul {
+                li {
+                    width: 80px;
+                    line-height: 50px;
+                    text-align: center;
+                    opacity: 0.7;
+                    cursor: pointer;
                     display: inline-block;
-                    li {
-                        margin-right: 20px;
-                        display: inline-block;
-                        label {
-                            margin-right: 5px;
-                        }
-                        input {
-                            border: 1px solid #fff;
-                            &:hover,
-                            &:focus {
-                                border: 1px solid $blue-hover;
-                            }
-                        }
+                    &:hover,
+                    &.active {
+                        opacity: 1;
                     }
                 }
-            }
-            .add {
-                float: right;
             }
         }
-
+        .condition {
+            margin: 100px auto 0;
+            ul {
+                display: inline-block;
+                li {
+                    margin-right: 20px;
+                    display: inline-block;
+                    label {
+                        margin-right: 5px;
+                    }
+                    input {
+                        border: 1px solid #fff;
+                        &:hover,
+                        &:focus {
+                            border: 1px solid $blue-hover;
+                        }
+                    }
+                }
+            }
+        }
+        .add {
+            float: right;
+        }
     }
+}
 </style>
 
 <script>
@@ -90,18 +87,18 @@
     export default {
         methods: {
             showBookAdd() {
-                this.$store.commit('SHOW_BOOK_ADD', {showBookAdd: true});
-                this.$store.commit('BOOK_INFO', {book: {}});
+                this.$store.commit('SHOW_BOOK_ADD', {showBookAdd: true})
+                this.$store.commit('BOOK_INFO', {book: {}})
             },
             search() {
                 bookApi
                     .getBooks({})
                     .then((res) => {
-                        this.$store.commit('BOOK_LIST', {list: res.body.data});
+                        this.$store.commit('BOOK_LIST', {list: res.body.data})
                     })
                     .catch((err) => {
-                        console.log(err);
-                    });
+                        console.log(err)
+                    })
             }
         }
     }

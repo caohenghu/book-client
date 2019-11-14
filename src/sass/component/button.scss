@@ -1,3 +1,29 @@
+@mixin button-border-font-color($borderColor, $fontColor, $bgColor) {
+    color: $fontColor;
+    border: 1px solid $borderColor;
+    &:hover {
+        color: #fff;
+        border: 1px solid $bgColor;
+        background-color: $bgColor;
+    }
+}
+
+@mixin button-border-grey($bgColor) {
+    @include button-border-font-color($border-grey, $font-light, $bgColor);
+}
+
+@mixin button-border-color($bgColor) {
+    @include button-border-font-color($bgColor, $bgColor, $bgColor);
+}
+
+@mixin button-color($normalColor, $hoverColor) {
+    color: #fff;
+    background-color: $normalColor;
+    &:hover {
+        background-color: $hoverColor;
+    }
+}
+
 .btn {
     width: 90px;
     height: 30px;

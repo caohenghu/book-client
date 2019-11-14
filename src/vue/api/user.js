@@ -1,9 +1,4 @@
-import Vue from 'vue'
-import VueResource from 'vue-resource'
-
-Vue.use(VueResource);
-
-const HOST_SERVER = '//localhost:3000';
+const HOST_SERVER = '//localhost:3000'
 
 export default {
     getUser,
@@ -13,28 +8,28 @@ export default {
     updateUser
 }
 
-function getUsers({pageIndex = 1, pageCount = 100, isbn}) {
-    return Vue.http.get(`${HOST_SERVER}/user`, {
+function getUsers({ pageIndex = 1, pageCount = 100, isbn }) {
+    return axios.get(`${HOST_SERVER}/user`, {
         params: {
             pageIndex,
             pageCount,
             isbn
         }
-    });
+    })
 }
 
 function getUser(user) {
-    return Vue.http.get(`${HOST_SERVER}/user/${user._id}`);
+    return axios.get(`${HOST_SERVER}/user/${user.id}`)
 }
 
 function addUser(user) {
-    return Vue.http.post(`${HOST_SERVER}/user`, user);
+    return axios.post(`${HOST_SERVER}/user`, user)
 }
 
 function deleteUser(user) {
-    return Vue.http.delete(`${HOST_SERVER}/user/${user._id}`);
+    return axios.delete(`${HOST_SERVER}/user/${user.id}`)
 }
 
 function updateUser(user) {
-    return Vue.http.put(`${HOST_SERVER}/user/${user._id}`, user);
+    return axios.put(`${HOST_SERVER}/user/${user.id}`, user)
 }

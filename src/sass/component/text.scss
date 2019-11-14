@@ -6,14 +6,13 @@
     color: $font-light;
     transition: all .3s;
     font-size: 12px;
-    @include border();
+    border: 1px solid $border-grey;
     &::-webkit-input-placeholder {
         color: $font-lighter;
     }
     &:hover,
     &:focus {
         //box-shadow: 0 0 10px 0 $blue-normal;
-        @include border($blue-normal);
+        border: 1px solid $blue-normal;
     }
-
 }

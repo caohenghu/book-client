@@ -3,7 +3,6 @@
 </template>
 
 <style scoped lang="scss">
-
 </style>
 
 <script>
@@ -16,31 +15,31 @@
         },
         computed: {
             showUserEdit() {
-                return this.$store.state.user.showUserEdit;
+                return this.$store.state.user.showUserEdit
             },
             user() {
-                return this.$store.state.user.info;
+                return this.$store.state.user.info
             }
         },
         methods: {
             ok() {
                 userApi.updateUser(this.user)
                     .then(() => {
-                        return userApi.getUsers({});
+                        return userApi.getUsers({})
                     })
                     .then((res) => {
-                        this.$store.commit('USER_LIST', {list: res.body.data});
-                        this.hideUserEdit();
+                        this.$store.commit('USER_LIST', {list: res.body.data})
+                        this.hideUserEdit()
                     })
                     .catch((err) => {
-                        console.log(err);
-                    });
+                        console.log(err)
+                    })
             },
             cancel() {
-                this.hideUserEdit();
+                this.hideUserEdit()
             },
             hideUserEdit() {
-                this.$store.commit('SHOW_USER_EDIT', {showUserEdit: false});
+                this.$store.commit('SHOW_USER_EDIT', {showUserEdit: false})
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <span class="title">图书管理系统</span>
+        <span class="title">图书管理系统1</span>
         <ul class="category">
             <li>管理</li>
             <li>技术</li>
@@ -13,40 +13,38 @@
 </template>
 
 <style scoped lang="scss">
-    @import "../../../sass/base/variable";
-
-    .header {
-        height: 400px;
-        padding: 100px 0;
-        color: #fff;
-        background: $blue-normal;
-        text-align: center;
-        .title {
-            font-size: 60px;
-        }
-        .category {
-            font-size: 16px;
-            li {
-                display: inline-block;
-                margin: 50px 20px 20px;
-                opacity: .7;
-                cursor: pointer;
-                &:hover {
-                    opacity: 1;
-                }
-            }
-        }
-        .search {
-            width: 650px;
-            height: 40px;
-            padding: 0 6px;
-            border-radius: 3px;
-            color: $font-light;
-            &::-webkit-input-placeholder {
-                color: $font-lighter;
+.header {
+    height: 400px;
+    padding: 100px 0;
+    color: #fff;
+    background: $blue-normal;
+    text-align: center;
+    .title {
+        font-size: 60px;
+    }
+    .category {
+        font-size: 16px;
+        li {
+            display: inline-block;
+            margin: 50px 20px 20px;
+            opacity: 0.7;
+            cursor: pointer;
+            &:hover {
+                opacity: 1;
             }
         }
     }
+    .search {
+        width: 650px;
+        height: 40px;
+        padding: 0 6px;
+        border-radius: 3px;
+        color: $font-light;
+        &::-webkit-input-placeholder {
+            color: $font-lighter;
+        }
+    }
+}
 </style>
 
 <script>
@@ -58,10 +56,10 @@
                 bookApi
                     .getBook()
                     .then((res) => {
-                        this.$store.commit('BOOK_LIST', {list: res.body.data});
+                        this.$store.commit('BOOK_LIST', {list: res.body.data})
                     })
                     .catch((err) => {
-                        alert(err);
+                        alert(err)
                     })
             }
         }
